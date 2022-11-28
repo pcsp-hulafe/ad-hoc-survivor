@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html class="js cookies svg placeholder no-touchevents mediaqueries borderradius boxshadow" style="" lang="es"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>Cuestionario - Cuestionario Post-Pasaporte Sup.</title>
+ <meta charset="utf-8">
+ <!--[if (lt IE 9) | (IEMobile)]><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><![endif]-->
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="author" content="Servicio de Informática Hospital La Fe">
+ <!--[if IE]><link rel="shortcut icon" href="/paciente/favicon.ico" type="image/x-icon" /><![endif]-->
+ <link rel="apple-touch-icon" href="https://videoconsultapre.lafe.es/paciente/apple-touch-icon.png">
+ <link rel="icon" href="https://videoconsultapre.lafe.es/paciente/favicon.png">
+ <link rel="stylesheet" type="text/css" href="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/lafe.min.css">
+ <script src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/lafe.min.js"></script>
+<script src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/modernizr.js"></script>
+<script>
+ window.onload = function(e) {
+  setOnSubmitTodosForms();
+
+  if (typeof alCargarEstaPagina === "function") {
+    alCargarEstaPagina(e);
+  }
+
+ }
+
+ function onClickDoc(e) {
+  if (! e) var e = window.event;
+
+  var seguir = true;
+  if (typeof alHacerClicEnEstaPagina === "function") {
+    seguir = alHacerClicEnEstaPagina(e);
+   }
+
+  var el;
+  var elEvt = e.target || e.srcElement;
+  if (seguir) {
+   if ( (isInputSubmit(elEvt)) || (isInputSubmit(el = onClickFila(e))) ) {
+     onClickInputSubmit(e, el);
+   }
+   else if (isAButton(elEvt)) {
+    onClickAButton(e);
+   }
+  }
+
+ }
+
+ document.onclick = onClickDoc;
+ </script><style>
+@media (min-width: 681px) {
+#s0 div.campo-etiqueta-corta > label, #s0 div.campo-etiqueta-corta > span.label {
+ width: 18rem;
+}
+#s0 div.campo-etiqueta-corta .campo-ayuda, #s0 div.campo-etiqueta-corta samp.campo-solo-lectura-valor {
+ margin-left: 18rem;
+}
+ul label {
+ width: auto; }
+}</style>
+ <script>
+var ligaduras = { };
+
+function gl(cv) {
+ var ret = ligaduras[cv];
+ if (! ret) {
+  ret = [];
+  ligaduras[cv] = ret;
+ }
+ return ret;
+}
+
+
+function alCargarEstaPagina(e) {
+
+ var elSels = document.getElementsByTagName("SELECT");
+ if (elSels) {
+
+  var elSel;
+  for (var i = 0; (i < elSels.length); i++) {
+   elSel = elSels[i];
+   var att = elSel.getAttribute("data-lafe-campo-ligado");
+
+   if ( (att) && (att === "1") ) {
+
+    elSel.onchange = onClicSelectLigado;
+   } 
+  }
+ }
+}
+
+function onClicSelectLigado(e) {
+
+  var el = e.target || e.srcElement;
+  var elOption = (el) ? el.options[el.selectedIndex] : null;
+  alHacerClicEnEstaPagina(null, elOption);
+
+  return false;
+ }
+
+function alHacerClicEnEstaPagina(e, d) {
+ var el = (e) ? e.target || e.srcElement : d;
+
+ if (
+   (el) && (! el.disabled)
+   && (el.tagName)
+   && ( ( (el.tagName === "INPUT") && ( (el.type === "radio") || (el.type === "checkbox") ) )
+        || (el.tagName === "OPTION") ) 
+   ) {
+  var valorId = el.getAttribute("data-valor-id");
+  var name;
+  if (valorId) {
+    name = el.getAttribute("name");
+    if ( (! name) && (el.parentNode) ) {
+      name = el.parentNode.getAttribute("name");
+    }
+  }
+
+  if ( (valorId) && (name) ) {
+   var lig = name + "@" + valorId;
+   var ccs = ligaduras[lig];
+   if ( (ccs) && (ccs.length) ) {
+     for (var i = 0; (i < ccs.length); i++) {
+       var cc = ccs[i];
+
+       mostrarUOcultarLigado(el, cc);
+     }
+   }
+  }
+ }
+
+ return true;
+}
+
+function mostrarUOcultarLigado(elClicado, idContenedorLigado) {
+ var mostrar;
+ if ( (elClicado.type) && (elClicado.type === "checkbox") ) {
+  mostrar = elClicado.checked;
+ }
+ else {
+  var accion = idContenedorLigado.slice(0, 1);
+  if (accion === "!") {
+   mostrar = false;
+   idContenedorLigado = idContenedorLigado.slice(1);
+  }
+  else {
+   mostrar = true;
+  }
+ }
+
+ var elContenedorLigado = document.getElementById(idContenedorLigado);
+ if (elContenedorLigado) {
+  var reOculto = / ?campo-ligado-oculto/;
+  var clase = (elContenedorLigado.className) ? elContenedorLigado.className : "";
+  var tieneClaseOculto = reOculto.test(clase);
+
+  if ( (mostrar) && (tieneClaseOculto) ) {
+   elContenedorLigado.className = clase.replace(reOculto, "");
+
+  }
+  else if ( (! mostrar) && (! tieneClaseOculto) ) {
+   elContenedorLigado.className = clase + " campo-ligado-oculto";
+
+  }
+ }
+}
+ </script>
+<script src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/prompt.js"></script></head>
+<body class="cuestionario">
+<div id="cabecera-barra-idiomas"><ul><li><a href="https://videoconsultapre.lafe.es/paciente/cuestionario/i7DQbpEXanKyGC2X7BAL3A4pfKKdcp?idioma=va" lang="ca">_Valencià</a></li><li><a href="https://videoconsultapre.lafe.es/paciente/cuestionario/i7DQbpEXanKyGC2X7BAL3A4pfKKdcp?idioma=es" lang="es">_Castellano</a></li></ul></div>
+<div id="cabecera-logos">
+ <a href="http://www.hospital-lafe.com/" rel="external"><img alt="logo-departamento" class="logo-lafe v" src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/logo-lafe-vb.svg"><img alt="" class="logo-lafe bm" src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/logo-lafe-vb.png"></a>
+ <img class="imagen-central" src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/lafe-banner.png" alt=""><div class="banner">Entorno PRE</div><img alt="" class="logo-sanitat" src="Cuestionario%20-%20Cuestionario%20Post-Pasaporte%20Sup_files/logo-gva-san-vb.png"><span class="enlace-gva"><a href="http://www.gva.es/" rel="noreferrer external" class="inverso">www.gva.es</a></span>
+</div>
+<div id="cabecera-barra-separacion">
+ | 
+SIP: *****667</div>
+<div id="cuestionario" class="contenido">
+
+<div role="status" class="mensajes">
+<ul>
+<li class="li-warn">La fecha tope para rellenar este cuestionario es el <strong><time datetime="2022-12-28">28-diciembre-2022 23:59</time></strong>.</li>
+</ul>
+</div><div class="preambulo">
+   <p>Este cuestionario forma parte del Proyecto del Pasaporte del 
+Superviviente, desarrollado por el Hospital Universitari i Politècnic La
+ Fe y el Instituto de Investiagación Sanitaria La Fe.</p>
+<p>Estimado participante, a continuación encontrará una lista de 
+afirmaciones diseñadas para evaluar su estado de ánimo tras la entrega 
+del <a target="_blank" href="https://www.pancaresurpass.eu/">SurPass.</a></p> 
+<p>Por favor, indique en qué medida está de acuerdo con cada afirmación,
+ haciendo clic en el nivel que sea más acertado en su caso. No hay 
+respuestas correctas o incorrectas; si no quiere responder a la 
+afirmación, pulse en <strong>No sabe/No contesta</strong></p></div>
+ <h2>Cuestionario Post-Pasaporte Sup.</h2>
+ <form method="POST" autocomplete="off" accept-charset="utf-8"><fieldset id="s0">
+<legend>Encuesta</legend>
+<div id="cc2" class="campo campo-primero campo-rbocb">
+<span class="label">Por favor, marque quién ha rellenado este cuestionario:</span> <ul id="c2"><li><label><input type="radio" name="2" value="0" data-valor-id="1">Superviviente</label></li>
+<li><label><input type="radio" name="2" value="1" data-valor-id="2">Padre/Tutor</label></li>
+</ul>
+</div>
+<div id="cc3" class="campo campo-rbocb">
+<span class="label">Sobre mi enfermedad anterior y el/los tratamiento/s que recibí:</span> <div class="campo-ayuda">Ahora tengo información que <strong>no tenía</strong> antes sobre mi enfermedad anterior y el/los tratamiento/s recibido(s).</div><ul id="c3"><li><label><input type="radio" name="3" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="3" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="3" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="3" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="3" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc4" class="campo campo-rbocb">
+<span class="label">Sé más sobre las posibles complicaciones a largo plazo de los tratamientos recibidos:</span> <ul id="c4"><li><label><input type="radio" name="4" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="4" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="4" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="4" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="4" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc5" class="campo campo-rbocb">
+<span class="label">Me siento más responsable de seguir con las visitas de seguimiento:</span> <ul id="c5"><li><label><input type="radio" name="5" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="5" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="5" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="5" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="5" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc6" class="campo campo-rbocb">
+<span class="label">Comprendo mejor el motivo por el que me fueron propuestas visitas de seguimiento personalizadas:</span> <ul id="c6"><li><label><input type="radio" name="6" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="6" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="6" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="6" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="6" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc7" class="campo campo-rbocb">
+<span class="label">Tengo más claro qué órgano/sistemas debo vigilar y cuáles no:</span> <ul id="c7"><li><label><input type="radio" name="7" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="7" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="7" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="7" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="7" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc8" class="campo campo-rbocb">
+<span class="label">La información que he recibido me ha hecho modificar algunos aspectos de mi vida diaria:</span> <ul id="c8"><li><label><input type="radio" name="8" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="8" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="8" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="8" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="8" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc9" class="campo campo-rbocb">
+<span class="label">Me he sentido más seguro/a para hablar sobre mis posibles complicaciones tardías:</span> <ul id="c9"><li><label><input type="radio" name="9" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="9" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="9" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="9" value="3" data-valor-id="4">Muy de acuredo</label></li>
+<li><label><input type="radio" name="9" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc10" class="campo campo-rbocb">
+<span class="label">Me da menos vergüenza hablar sobre mi historial médico:</span> <ul id="c10"><li><label><input type="radio" name="10" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="10" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="10" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="10" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="10" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc11" class="campo campo-rbocb">
+<span class="label">He sentido miedo sobre las posibles complicaciones futuras que previamente no tenía:</span> <ul id="c11"><li><label><input type="radio" name="11" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="11" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="11" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="11" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="11" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc12" class="campo campo-rbocb">
+<span class="label">Me siento más enfadado/a:</span> <ul id="c12"><li><label><input type="radio" name="12" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="12" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="12" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="12" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="12" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc13" class="campo campo-rbocb">
+<span class="label">Tras todo esto:</span> <div class="campo-ayuda">Sigo pensando en las posibles complicaciones que me dijeron que podrían ocurrir después del tratamiento de mi enfermedad</div><ul id="c13"><li><label><input type="radio" name="13" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="13" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="13" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="13" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="13" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc14" class="campo campo-rbocb">
+<span class="label">Tener el Surpass digital:</span> <div class="campo-ayuda">Me tranquiliza para así poder detectar las posibles complicaciones del tratamiento</div><ul id="c14"><li><label><input type="radio" name="14" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="14" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="14" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="14" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="14" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc15" class="campo campo-rbocb">
+<span class="label">Me sentí abrumado por las visitas de seguimiento que me recomendaron:</span> <ul id="c15"><li><label><input type="radio" name="15" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="15" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="15" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="15" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="15" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc16" class="campo campo-rbocb">
+<span class="label">Aumentó mi preocupación por las posibles complicaciones relacionadas con mis tratamientos anteriores:</span> <ul id="c16"><li><label><input type="radio" name="16" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="16" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="16" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="16" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="16" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc17" class="campo campo-rbocb">
+<span class="label">Sobre la atención recibida:</span> <div class="campo-ayuda">El médico que me entregó el Surpass me ayudó a entender la información que contenía</div><ul id="c17"><li><label><input type="radio" name="17" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="17" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="17" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="17" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="17" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+<div id="cc18" class="campo campo-rbocb">
+<span class="label">Sobre futuras acciones:</span> <div class="campo-ayuda">El médico que me entregó el SurPass y yo nos pusimos de acuerdo sobre mis siguientes visitas de seguimiento</div><ul id="c18"><li><label><input type="radio" name="18" value="0" data-valor-id="1">Muy en desacuerdo</label></li>
+<li><label><input type="radio" name="18" value="1" data-valor-id="2">En desacuerdo</label></li>
+<li><label><input type="radio" name="18" value="2" data-valor-id="3">De acuerdo</label></li>
+<li><label><input type="radio" name="18" value="3" data-valor-id="4">Muy de acuerdo</label></li>
+<li><label><input type="radio" name="18" value="4" data-valor-id="5">Sin respuesta</label></li>
+</ul>
+</div>
+</fieldset>
+<div class="acciones">
+<input type="submit" name="b" value="Enviar respuestas">
+</div>
+</form></div>
+<hr>
+<div id="pie">
+<div>© 2018 Generalitat Valenciana</div>
+<div>Conselleria de Sanitat Universal i Salut Pública</div>
+<div>Departament de Salut València La Fe</div>
+<div>
+<a href="https://videoconsultapre.lafe.es/paciente/mapa-web" rel="help">Mapa Web</a> | <a href="https://videoconsultapre.lafe.es/paciente/aviso-legal" rel="license">Aviso Legal</a> | <a href="https://videoconsultapre.lafe.es/paciente/politica-cookies" rel="license">Política <em>cookies</em></a> | <a href="https://videoconsultapre.lafe.es/paciente/preguntas-frecuentes" rel="help">Ayuda</a></div>
+</div>
+<!--[if (lt IE 9) | (IEMobile)]> <script src="/paciente/st/js/rem.min.js?1.0.6" type="text/javascript"></script> <![endif]-->
+
+
+</body></html>
